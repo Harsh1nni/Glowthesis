@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Glowthesis | Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{{ url_for('home') }}">
+                <span class="brand-mark">G</span><span class="brand-name">Glowthesis</span>
+            </a>
+            <nav>
+                <a href="{{ url_for('home') }}">Home</a>
+
+                {% if session.get('user_id') == 'ADMIN' %}
+                    <a href="{{ url_for('admin') }}" class="admin-link">Admin Panel</a>
+                {% elif session.get('user_id') %}
+                    <a href="{{ url_for('profile') }}">My Profile</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('signup') }}">Sign Up</a>
+                {% endif %}
+
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('logout') }}" style="opacity: 0.6; font-size: 0.8rem;">
+                        Logout ({{ session.get('user_name') }})
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    {% if session.get('user_name') %}
+                        <h1>Welcome back, {{ session.get('user_name') }}!</h1>
+                        <p class="lead">Ready for your daily skin check-in? Let's see your progress.</p>
+                        <div class="hero-actions">
+                            <a class="btn btn-primary" href="{{ url_for('analyse') }}">Start New Scan</a>
+                        </div>
+                    {% else %}
+                        <h1>Your Skin, Decoded by AI.</h1>
+                        <p class="lead">Get a professional-grade skin analysis in seconds. Scan your face, share your goals, and receive a routine tailored specifically to you.</p>
+                        <div class="hero-actions">
+                            <a class="btn btn-primary" href="{{ url_for('signup') }}">Create Account</a>
+                            <a class="btn btn-ghost" href="{{ url_for('login') }}">Log In</a>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <a href="{{ url_for('analyse') }}" style="color: var(--text-dark); opacity: 0.7; text-decoration: underline;">
+                                Continue as Guest
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="about-us-section" style="padding: 100px 0; background: var(--white);">
+            <div class="container" style="display: flex; align-items: center; gap: 60px; flex-wrap: wrap;">
+                
+                <div style="flex: 1; min-width: 320px;">
+                    <h2 style="color: var(--accent-pink); font-size: 2.2rem; margin-bottom: 25px;">The Science of Glow</h2>
+                    <p style="margin-bottom: 20px; font-size: 1.1rem; line-height: 1.8; color: var(--text-dark);">
+                        Glowthesis was born at the intersection of <strong>Dermatological Science</strong> and <strong>Artificial Intelligence</strong>. We believe that professional-grade skin analysis should be accessible to everyone, everywhere.
+                    </p>
+                    <p style="opacity: 0.8; margin-bottom: 30px; line-height: 1.7;">
+                        Our proprietary AI model doesn't just look at your skin; it understands it. By analyzing specific diagnostic zones, Glowthesis provides a data-driven blueprint for your daily routine, evolving as your skin does.
+                    </p>
+                    
+                    <div style="display: flex; gap: 30px; border-top: 1px solid var(--primary-pink); padding-top: 30px;">
+                        <div>
+                            <h4 style="color: var(--accent-pink); font-size: 1.5rem;">98%</h4>
+                            <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">AI Accuracy</p>
+                        </div>
+                        <div style="border-left: 1px solid var(--primary-pink); padding-left: 30px;">
+                            <h4 style="color: var(--accent-pink); font-size: 1.5rem;">24/7</h4>
+                            <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Clinical Access</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="flex: 1; min-width: 320px;">
+                    <div style="background: var(--primary-pink); border-radius: 40px; padding: 50px; position: relative;">
+                        <div class="card" style="margin-top: 0; text-align: center; transform: rotate(-2deg); transition: transform 0.3s ease;">
+                            <p style="font-style: italic; color: var(--accent-pink); font-size: 1.2rem; margin-bottom: 15px;">
+                                "Personalized skincare is no longer a luxury, but a digital standard."
+                            </p>
+                            <p style="font-weight: 700; font-size: 0.9rem; color: var(--text-dark);">
+                                — The Glowthesis Lab
+                            </p>
+                        </div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: var(--accent-pink); border-radius: 50%; opacity: 0.2;"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Glowthesis Administrative System</p>
+    </footer>
+</body>
+</html>

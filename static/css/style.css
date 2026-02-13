@@ -1,0 +1,392 @@
+/* --- Glowthesis Color Palette --- */
+:root {
+    --primary-pink: #fce4ec;     /* Soft Baby Pink */
+    --accent-pink: #f06292;      /* Stronger pink for buttons */
+    --warm-beige: #f5f5dc;       /* Classic Beige */
+    --soft-cream: #fffaf0;       /* Floral White/Cream */
+    --text-dark: #4a4a4a;        /* Soft charcoal for readability */
+    --white: #ffffff;
+    --admin-red: #d63384;        /* Distinct pink-red for Admin actions */
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Base Styles --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--soft-cream);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- Header & Nav --- */
+.site-header {
+    background: var(--white);
+    padding: 20px 0;
+    border-bottom: 1px solid var(--primary-pink);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-mark {
+    background: var(--primary-pink);
+    color: var(--accent-pink);
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    letter-spacing: -1px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+nav a:hover, nav a.active {
+    color: var(--accent-pink);
+}
+
+/* Special Admin Link Styling */
+.admin-link {
+    background: #fff0f3;
+    color: var(--admin-red) !important;
+    padding: 6px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--accent-pink);
+    font-size: 0.85rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-link:hover {
+    background: var(--primary-pink);
+}
+
+/* --- Hero Section --- */
+.hero {
+    padding: 100px 20px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--white) 0%, var(--primary-pink) 100%);
+    border-radius: 0 0 50px 50px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.lead {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: var(--accent-pink);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: #ec407a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(240, 98, 146, 0.3);
+}
+
+.btn-ghost {
+    background-color: transparent;
+    border: 2px solid var(--primary-pink);
+    color: var(--text-dark);
+}
+
+.btn-ghost:hover {
+    background-color: var(--primary-pink);
+}
+
+/* --- Admin Table Styles --- */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-top: 30px;
+}
+
+.admin-table th {
+    background-color: var(--primary-pink);
+    color: var(--text-dark);
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.admin-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.admin-table tr:hover {
+    background-color: var(--soft-cream);
+}
+
+/* --- Cards & Grid --- */
+.card-grid, .analysis-grid, .results-grid, .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--primary-pink);
+}
+
+/* --- Forms --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+select, input[type="email"], input[type="password"], input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--primary-pink);
+    background: var(--soft-cream);
+    font-family: inherit;
+}
+
+/* --- Results Page Specifics --- */
+.routine-step {
+    background: var(--warm-beige);
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+/* --- Profile/Dashboard --- */
+.progress-bar {
+    background: var(--primary-pink);
+    height: 12px;
+    border-radius: 10px;
+    margin-top: 8px;
+}
+
+.fill {
+    background: var(--accent-pink);
+    height: 100%;
+    border-radius: 10px;
+}
+
+/* Responsive Footer */
+footer {
+    padding: 50px 0;
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+/* --- Auth Page Styles --- */
+.auth-page {
+    background: var(--primary-pink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.auth-container {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-card {
+    margin-top: 20px;
+    padding: 40px !important;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Result Hotspots */
+.ai-hotspot {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: rgba(240, 98, 146, 0.4);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.forehead { top: 20%; left: 45%; }
+.cheek { top: 50%; left: 30%; border-color: #4db6ac; background: rgba(77, 182, 172, 0.4); }
+
+.hotspot-label {
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-dark);
+    color: white;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Metric Bars */
+.metric-item label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+@media print {
+    .site-header, .btn, .results-actions, footer {
+        display: none !important;
+    }
+    body {
+        background: white !important;
+    }
+    .card {
+        border: 1px solid #eee !important;
+        box-shadow: none !important;
+    }
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns for the top cards */
+    gap: 25px;
+}
+
+.full-width {
+    grid-column: 1 / -1; /* Makes history stretch across both columns */
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Stacks everything on mobile */
+    }
+}
+/* Forces every scan to be a perfect, uniform square */
+.image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--primary-pink);
+    background: #eee; /* Placeholder color while loading */
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This is the magic: no more stretched faces! */
+    transition: transform 0.3s ease;
+}
+
+/* Make them move slightly when you mouse over them in your video */
+.history-card-item:hover img {
+    transform: scale(1.05);
+}
+
+.history-info {
+    padding: 10px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.history-date {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.history-goal {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-pink);
+    background: rgba(240, 98, 146, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+    width: fit-content;
+    margin: 0 auto;
+}

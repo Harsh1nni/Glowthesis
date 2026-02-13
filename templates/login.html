@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Glowthesis | Secure Access</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Extra styling for the dual layout */
+        .dual-login-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+        }
+        .admin-box {
+            border: 2px dashed var(--accent-pink) !important;
+            background: rgba(252, 228, 236, 0.2) !important;
+        }
+        @media (max-width: 768px) {
+            .dual-login-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <div class="container" style="text-align: center; padding-top: 50px;">
+        <a href="{{ url_for('home') }}" class="brand-name" style="text-decoration:none; font-size: 2.5rem;">Glowthesis</a>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div style="background: #fce8e6; color: #d93025; padding: 10px; border-radius: 8px; margin: 20px auto; max-width: 400px; font-size: 14px;">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="dual-login-grid">
+            
+            <div class="card auth-card">
+                <h2 style="color: var(--accent-pink);">User Portal</h2>
+                <p style="font-size: 0.9rem; margin-bottom: 20px; opacity: 0.7;">Access your scans & routine</p>
+                
+                <form action="/login" method="POST">
+                    <div class="form-group" style="text-align: left;">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group" style="text-align: left;">
+                        <label>Password</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Log In</button>
+                </form>
+                <p class="auth-footer" style="margin-top: 20px;">Need an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+            </div>
+
+            <div class="card auth-card admin-box">
+                <h2 style="color: var(--text-dark);">Staff Access</h2>
+                <p style="font-size: 0.9rem; margin-bottom: 20px; opacity: 0.7;">Administrative Oversight Only</p>
+                
+                <form action="/login" method="POST">
+                    <div class="form-group" style="text-align: left;">
+                        <label>Admin ID</label>
+                        <input type="email" name="email" placeholder="admin@glowthesis.com" required>
+                    </div>
+                    <div class="form-group" style="text-align: left;">
+                        <label>Security Pin</label>
+                        <input type="password" name="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-ghost btn-block" style="border-color: var(--text-dark);">Secure Staff Login</button>
+                </form>
+                <p class="auth-footer" style="margin-top: 20px; opacity: 0.5;">Authorized Personnel Only</p>
+            </div>
+
+        </div>
+
+        <p class="auth-footer"><a href="{{ url_for('analyse') }}" style="opacity: 0.6; text-decoration: underline;">Continue as Guest</a></p>
+    </div>
+
+</body>
+</html>

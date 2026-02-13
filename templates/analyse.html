@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glowthesis | Skin Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{{ url_for('home') }}">
+                <span class="brand-mark">G</span>
+                <span class="brand-name">Glowthesis</span>
+            </a>
+
+            <nav>
+                <a href="{{ url_for('home') }}">Home</a>
+
+                {% if session.get('user_id') == 'ADMIN' %}
+                    <a href="{{ url_for('admin') }}" class="admin-link">Admin Panel</a>
+                {% elif session.get('user_id') %}
+                    <a href="{{ url_for('profile') }}">My Profile</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('signup') }}">Sign Up</a>
+                {% endif %}
+
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('logout') }}" style="opacity: 0.6; font-size: 0.8rem; margin-left: 10px;">
+                        Logout ({{ session.get('user_name') }})
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="analysis-section">
+            <div class="section-title">
+                <h1>Skin Assessment</h1>
+                <p>Scan your face or upload a photo to begin.</p>
+            </div>
+
+            <div class="analysis-grid">
+                <div class="card camera-card">
+                    <div class="card-header"><h3>Face Scan</h3></div>
+                    
+                    <div class="video-container" style="background: #000; border-radius: 8px; overflow: hidden; position: relative; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center;">
+                        <video id="webcam" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+                        <canvas id="photo-canvas" style="display:none;"></canvas>
+                        <img id="upload-preview" style="display:none; width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <div class="camera-controls" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                        <button id="capture-btn" class="btn btn-primary">Capture from Webcam</button>
+                        
+                        <div style="text-align: center; font-size: 12px; color: #888;">— OR —</div>
+                        
+                        <label for="file-upload" class="btn btn-ghost" style="cursor: pointer; text-align: center; display: block;">
+                            Select from Folder
+                        </label>
+                        <input type="file" id="file-upload" accept="image/*" style="display: none;">
+                        
+                        <p id="capture-status" style="display:none; color: #28a745; margin-top: 5px; font-weight: bold; text-align: center;">✅ Image Ready!</p>
+                    </div>
+                </div>
+
+                <div class="card quiz-card">
+                    <div class="card-header"><h3>Skincare Goals</h3></div>
+                    <form action="{{ url_for('analyse') }}" method="POST">
+                        <div class="form-group">
+                            <label>Primary Goal</label>
+                            <select name="goal" required>
+                                <option value="acne">Clear Acne</option>
+                                <option value="redness">Reduce Redness</option>
+                                <option value="texture">Smooth Texture</option>
+                                <option value="pigment">Fade Dark Spots</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sun Exposure</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="sun" value="low" checked> Low</label>
+                                <label><input type="radio" name="sun" value="high"> High</label>
+                            </div>
+                        </div>
+                        <input type="hidden" name="image_data" id="image_data">
+                        <button type="submit" class="btn btn-primary btn-block">Generate Results</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    const video = document.getElementById('webcam');
+    const canvas = document.getElementById('photo-canvas');
+    const captureBtn = document.getElementById('capture-btn');
+    const fileUpload = document.getElementById('file-upload');
+    const uploadPreview = document.getElementById('upload-preview');
+    const imageInput = document.getElementById('image_data');
+    const status = document.getElementById('capture-status');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => { video.srcObject = stream; })
+        .catch(err => { console.error("Webcam not available", err); });
+
+    function processAndShrinkImage(sourceElement) {
+        const context = canvas.getContext('2d');
+        
+        // FORCING A SMALLER SIZE (Efficiency!)
+        // This keeps the image under the server limit
+        canvas.width = 640; 
+        canvas.height = 480;
+        
+        context.drawImage(sourceElement, 0, 0, canvas.width, canvas.height);
+        
+        // 0.5 means 50% quality - plenty for a demo, but tiny file size
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.5); 
+        imageInput.value = dataUrl;
+        
+        uploadPreview.src = dataUrl;
+        uploadPreview.style.display = 'block';
+        video.style.display = 'none';
+        
+        status.style.display = 'block';
+        status.innerText = "✅ Image Optimized & Ready!";
+    }
+
+    captureBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        processAndShrinkImage(video);
+    });
+
+    fileUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    processAndShrinkImage(img);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+    <footer>
+        <p>&copy; 2026 Glowthesis Administrative System</p>
+    </footer>
+</body>
+</html>

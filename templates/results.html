@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Glowthesis | Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{{ url_for('home') }}">
+                <span class="brand-mark">G</span>
+                <span class="brand-name">Glowthesis</span>
+            </a>
+
+            <nav>
+                <a href="{{ url_for('home') }}">Home</a>
+
+                {% if session.get('user_id') == 'ADMIN' %}
+                    <a href="{{ url_for('admin') }}" class="admin-link">Admin Panel</a>
+                {% elif session.get('user_id') %}
+                    <a href="{{ url_for('profile') }}">My Profile</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('signup') }}">Sign Up</a>
+                {% endif %}
+
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('logout') }}" style="opacity: 0.6; font-size: 0.8rem; margin-left: 10px;">
+                        Logout ({{ session.get('user_name') }})
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="results-header" style="text-align: center; margin-bottom: 40px; margin-top: 30px;">
+            <h1 style="color: var(--accent-pink);">Analysis Complete</h1>
+            <p>Your personalized dermatological blueprint is ready.</p>
+        </div>
+
+        <div class="results-grid">
+            <section class="card analysis-visual">
+                <h3>AI Diagnostic Overlay</h3>
+                <div class="scan-overlay-container" style="position:relative; border-radius:15px; overflow:hidden; border: 3px solid var(--primary-pink);">
+                    <img src="{{ image_data }}" class="base-image" style="width:100%; display: block; filter: saturate(1.1);">
+                    
+                    <div class="ai-hotspot forehead">
+                        <span class="hotspot-label">T-Zone: Normal</span>
+                    </div>
+                    <div class="ai-hotspot cheek">
+                        <span class="hotspot-label">Hydration Alert</span>
+                    </div>
+                </div>
+                
+                <div class="vitality-metrics" style="margin-top: 25px;">
+                    <div class="metric-item">
+                        <label>Skin Clarity <span>88%</span></label>
+                        <div class="progress-bar"><div class="fill" style="width: 88%;"></div></div>
+                    </div>
+                    <div class="metric-item" style="margin-top: 15px;">
+                        <label>Hydration Level <span>42%</span></label>
+                        <div class="progress-bar"><div class="fill" style="width: 42%; background: #4db6ac;"></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card recommendations">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0;">Prescribed Routine</h3>
+                    <span class="brand-mark" style="font-size: 0.7rem; padding: 4px 10px;">{{ goal | upper }}</span>
+                </div>
+
+                <div class="routine-step">
+                    <h4>☀️ Morning</h4>
+                    <p>{{ advice.morning }}</p>
+                </div>
+                
+                <div class="routine-step">
+                    <h4>🌙 Evening</h4>
+                    <p>{{ advice.evening }}</p>
+                </div>
+
+                <div class="lifestyle-tips" style="background: var(--soft-cream); padding: 15px; border-radius: 12px; border-left: 4px solid var(--accent-pink);">
+                    <h4>💡 Clinical Note</h4>
+                    <p>{{ advice.tip }}</p>
+                </div>
+
+                {% if sun == 'high' %}
+                <div style="margin-top: 15px; padding: 10px; background: #fff5f5; border-radius: 8px; border: 1px solid #feb2b2; color: #c53030; font-size: 0.85rem; display: flex; align-items: center; gap: 10px;">
+                    <span>⚠️</span> <strong>UV Warning:</strong> High exposure detected. SPF 50 is mandatory.
+                </div>
+                {% endif %}
+
+                <div class="actions" style="margin-top:30px;">
+                    <a href="{{ url_for('profile') }}" class="btn btn-primary btn-block" style="text-align: center;">Save to My Dashboard</a>
+                </div>
+            </section>
+
+
+            <section class="card results-actions">
+                <h3>Finalize Analysis</h3>
+                <div class="actions-container" style="display: flex; gap: 15px; margin-top: 15px;">
+                    
+                    <form action="{{ url_for('save_scan') }}" method="POST" style="flex: 1;">
+                        <input type="hidden" name="image_data" value="{{ image_data }}">
+                        <input type="hidden" name="goal" value="{{ goal }}">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Save to Profile
+                        </button>
+                    </form>
+
+                    <button onclick="window.print()" class="btn btn-ghost" style="flex: 1;">
+                        Download PDF
+                    </button>
+                </div>
+                <p style="font-size: 0.75rem; text-align: center; margin-top: 10px; opacity: 0.6;">
+                    Saving will add this scan to your <strong>Skin Journey</strong> history.
+                </p>
+            </section>
+            
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2026 Glowthesis Administrative System</p>
+    </footer>
+</body>
+</html>
