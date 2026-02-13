@@ -109,14 +109,14 @@
     function processAndShrinkImage(sourceElement) {
         const context = canvas.getContext('2d');
         
-        // FORCING A SMALLER SIZE (Efficiency!)
-        // This keeps the image under the server limit
+        // tryna make it smaller
+        
         canvas.width = 640; 
         canvas.height = 480;
         
         context.drawImage(sourceElement, 0, 0, canvas.width, canvas.height);
         
-        // 0.5 means 50% quality - plenty for a demo, but tiny file size
+        
         const dataUrl = canvas.toDataURL('image/jpeg', 0.5); 
         imageInput.value = dataUrl;
         

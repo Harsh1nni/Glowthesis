@@ -6,10 +6,10 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'glow_secret_key_2026'
 
-# --- THE FIX: ALLOW LARGE IMAGE DATA (16MB) ---
+#  tryna fix this to allow large data
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 
 
-# Firebase Setup
+# Firebase setup
 cred = credentials.Certificate("serviceAccountKey.json")
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
@@ -44,13 +44,13 @@ def login():
         email = request.form.get('email')
         pw = request.form.get('password')
         
-        # --- ADMIN LOGIN LOGIC ---
+        # admin 
         if email == "admin@glowthesis.com" and pw == "admin123":
             session['user_id'] = 'ADMIN'
             session['user_name'] = 'System Admin'
             return redirect(url_for('admin'))
         
-        # --- REGULAR USER LOGIN ---
+        # normal user
         try:
             user = auth.get_user_by_email(email)
             u_data = db.collection('users').document(user.uid).get().to_dict()
@@ -67,8 +67,7 @@ def login():
 @app.route('/analyse', methods=['GET', 'POST'])
 def analyse():
     if request.method == 'POST':
-        # We catch the image data but don't need to save it to a folder
-        # for a simulation-based demo.
+        
         session['goal'] = request.form.get('goal')
         session['sun'] = request.form.get('sun')
         return redirect(url_for('results'))
@@ -92,10 +91,10 @@ def profile():
 
     user_id = session.get('user_id')
     
-    # 1. Get User Info
+    # get user info
     user_doc = db.collection('users').document(user_id).get().to_dict()
     
-    # 2. Get Scan History (Ordered by date)
+    #get scan history (by date)
     scans_ref = db.collection('users').document(user_id).collection('scans').order_by('timestamp', direction='DESCENDING').stream()
     
     scan_history = []
@@ -107,7 +106,7 @@ def profile():
     scan_history = []
     for s in scans_ref:
         data = s.to_dict()
-        data['id'] = s.id  # <--- THIS IS THE KEY! We need the Firestore document ID
+        data['id'] = s.id  # Firestore document ID
         scan_history.append(data)
 
     return render_template('profile.html', 
@@ -116,7 +115,7 @@ def profile():
                            scans=scan_history)
 
 @app.route('/admin')
-def admin():  # <--- This is the name Flask looks for
+def admin():  #the name Flask looks for
     if session.get('user_id') != 'ADMIN':
         flash("Access Denied: Admins Only.")
         return redirect(url_for('home'))
@@ -125,7 +124,7 @@ def admin():  # <--- This is the name Flask looks for
     all_users = []
     for u in users_ref:
         user_data = u.to_dict()
-        user_data['id'] = u.id  # Crucial for the table to work!
+        user_data['id'] = u.id 
         all_users.append(user_data)
         
     return render_template('admin.html', users=all_users)
@@ -143,10 +142,10 @@ def save_scan():
         'image_data': request.form.get('image_data'),
         'goal': request.form.get('goal'),
         'timestamp': datetime.now(),
-        'clarity': 88  # Placeholder for your AI score
+        'clarity': 88  # fake result
     }
 
-    # Push to Firebase sub-collection
+    
     db.collection('users').document(user_id).collection('scans').add(data)
     
     flash("Successfully saved to your dashboard!")
@@ -154,7 +153,7 @@ def save_scan():
 
 
 @app.route('/update_goal', methods=['POST'])
-def update_goal(): # <--- Flask looks for this name
+def update_goal(): 
     if not session.get('user_id'):
         return redirect(url_for('login'))
     
@@ -166,7 +165,7 @@ def update_goal(): # <--- Flask looks for this name
         'goal': new_goal
     })
     
-    # Update the session so the UI reflects the change immediately
+    
     session['goal'] = new_goal 
     
     return redirect(url_for('profile'))

@@ -1,16 +1,16 @@
 /* --- Glowthesis Color Palette --- */
 :root {
-    --primary-pink: #fce4ec;     /* Soft Baby Pink */
-    --accent-pink: #f06292;      /* Stronger pink for buttons */
-    --warm-beige: #f5f5dc;       /* Classic Beige */
-    --soft-cream: #fffaf0;       /* Floral White/Cream */
-    --text-dark: #4a4a4a;        /* Soft charcoal for readability */
+    --primary-pink: #fce4ec;
+    --accent-pink: #f06292;
+    --warm-beige: #f5f5dc;
+    --soft-cream: #fffaf0;
+    --text-dark: #4a4a4a;
     --white: #ffffff;
-    --admin-red: #d63384;        /* Distinct pink-red for Admin actions */
+    --admin-red: #d63384;
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-/* --- Base Styles --- */
+/*Base Styles */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -30,7 +30,7 @@ body {
     padding: 0 20px;
 }
 
-/* --- Header & Nav --- */
+/*Header & Nav */
 .site-header {
     background: var(--white);
     padding: 20px 0;
@@ -103,7 +103,7 @@ nav a:hover, nav a.active {
     background: var(--primary-pink);
 }
 
-/* --- Hero Section --- */
+/*Hero Section*/
 .hero {
     padding: 100px 20px;
     text-align: center;
@@ -125,7 +125,7 @@ nav a:hover, nav a.active {
     margin-right: auto;
 }
 
-/* --- Buttons --- */
+/* Buttons*/
 .btn {
     display: inline-block;
     padding: 12px 30px;
@@ -158,7 +158,7 @@ nav a:hover, nav a.active {
     background-color: var(--primary-pink);
 }
 
-/* --- Admin Table Styles --- */
+/*Admin Table Styles  */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -187,7 +187,7 @@ nav a:hover, nav a.active {
     background-color: var(--soft-cream);
 }
 
-/* --- Cards & Grid --- */
+/* Cards & Grid*/
 .card-grid, .analysis-grid, .results-grid, .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -203,7 +203,7 @@ nav a:hover, nav a.active {
     border: 1px solid var(--primary-pink);
 }
 
-/* --- Forms --- */
+/* Forms */
 .form-group {
     margin-bottom: 20px;
 }
@@ -223,7 +223,7 @@ select, input[type="email"], input[type="password"], input[type="text"], input[t
     font-family: inherit;
 }
 
-/* --- Results Page Specifics --- */
+/*Results Page Specifics */
 .routine-step {
     background: var(--warm-beige);
     padding: 15px;
@@ -231,7 +231,7 @@ select, input[type="email"], input[type="password"], input[type="text"], input[t
     margin-bottom: 15px;
 }
 
-/* --- Profile/Dashboard --- */
+/*Profile/Dashboard */
 .progress-bar {
     background: var(--primary-pink);
     height: 12px;
@@ -253,7 +253,7 @@ footer {
     opacity: 0.6;
 }
 
-/* --- Auth Page Styles --- */
+/*Auth Page Styles */
 .auth-page {
     background: var(--primary-pink);
     display: flex;
@@ -334,32 +334,32 @@ footer {
 }
 
 .full-width {
-    grid-column: 1 / -1; /* Makes history stretch across both columns */
+    grid-column: 1 / -1; /* history stretch across both columns */
 }
 
 @media (max-width: 768px) {
     .dashboard-grid {
-        grid-template-columns: 1fr; /* Stacks everything on mobile */
+        grid-template-columns: 1fr;
     }
 }
-/* Forces every scan to be a perfect, uniform square */
+/* uniform square everything*/
 .image-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: 12px;
     border: 1px solid var(--primary-pink);
-    background: #eee; /* Placeholder color while loading */
+    background: #eee; 
 }
 
 .image-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* This is the magic: no more stretched faces! */
+    object-fit: cover; 
     transition: transform 0.3s ease;
 }
 
-/* Make them move slightly when you mouse over them in your video */
+
 .history-card-item:hover img {
     transform: scale(1.05);
 }

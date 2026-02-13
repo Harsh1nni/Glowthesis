@@ -21,7 +21,7 @@
         return;
       }
 
-      // Placeholder "analysis" output (front-end only)
+      
       const wordCount = inputText.split(/\s+/).filter(Boolean).length;
       const charCount = inputText.length;
 
@@ -57,7 +57,7 @@
     }
   }
 
-  // Results page behaviour
+  // Results page 
   const resultsMeta = byId("resultsMeta");
   const resultsEmpty = byId("resultsEmpty");
   const resultsContent = byId("resultsContent");
