@@ -54,8 +54,9 @@ def signup():
 
             return redirect(url_for('profile'))
 
-        except:
-            flash("Signup failed. Try a different email.")
+        except Exception as e:
+            print("SIGNUP ERROR:", e)
+            flash(str(e))
 
     return render_template('signup.html')
 
