@@ -7,13 +7,20 @@ import numpy as np
 import base64
 import random
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
+import json
+
+#port = int(os.environ.get("PORT", 5000))
+#app.run(host="0.0.0.0", port=port)
 
 app = Flask(__name__)
 app.secret_key = 'glow_secret_key_2026'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # Firebase
-cred = credentials.Certificate("serviceAccountKey.json")
+firebase_key = json.loads(os.environ.get("FIREBASE_KEY"))
+
+cred = credentials.Certificate(firebase_key)
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -131,7 +138,7 @@ def analyse():
     return render_template('analyse.html')
 
 '''
-# ---------------- RESULTS ----------------
+# results
 @app.route('/results')
 def results():
     clarity = session.get('live_clarity', 0)
@@ -140,7 +147,7 @@ def results():
     print("DEBUG RESULTS:", clarity, redness, confidence)
     goal = session.get('goal', 'acne')
 
-    # 🔥 IMPROVED LOGIC (scan + goal combined)
+    # (scan + goal combined)
     if redness > 30:
         final = "redness"
     elif clarity < 50:
@@ -378,5 +385,6 @@ def delete_scan(scan_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 
