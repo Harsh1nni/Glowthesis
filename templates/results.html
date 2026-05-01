@@ -6,124 +6,181 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <header class="site-header">
-        <div class="container header-inner">
-            <a class="brand" href="{{ url_for('home') }}">
-                <span class="brand-mark">G</span>
-                <span class="brand-name">Glowthesis</span>
-            </a>
 
-            <nav>
-                <a href="{{ url_for('home') }}">Home</a>
+<header class="site-header">
+    <div class="container header-inner">
+        <a class="brand" href="{{ url_for('home') }}">
+            <span class="brand-mark">G</span>
+            <span class="brand-name">Glowthesis</span>
+        </a>
 
-                {% if session.get('user_id') == 'ADMIN' %}
-                    <a href="{{ url_for('admin') }}" class="admin-link">Admin Panel</a>
-                {% elif session.get('user_id') %}
-                    <a href="{{ url_for('profile') }}">My Profile</a>
-                {% else %}
-                    <a href="{{ url_for('login') }}">Login</a>
-                    <a href="{{ url_for('signup') }}">Sign Up</a>
-                {% endif %}
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
 
-                {% if session.get('user_id') %}
-                    <a href="{{ url_for('logout') }}" style="opacity: 0.6; font-size: 0.8rem; margin-left: 10px;">
-                        Logout ({{ session.get('user_name') }})
-                    </a>
-                {% endif %}
-            </nav>
-        </div>
-    </header>
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('profile') }}">My Profile</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
 
-    <main class="container">
-        <div class="results-header" style="text-align: center; margin-bottom: 40px; margin-top: 30px;">
-            <h1 style="color: var(--accent-pink);">Analysis Complete</h1>
-            <p>Your personalized dermatological blueprint is ready.</p>
-        </div>
+<main class="container">
 
-        <div class="results-grid">
-            <section class="card analysis-visual">
-                <h3>AI Diagnostic Overlay</h3>
-                <div class="scan-overlay-container" style="position:relative; border-radius:15px; overflow:hidden; border: 3px solid var(--primary-pink);">
-                    <img src="{{ image_data }}" class="base-image" style="width:100%; display: block; filter: saturate(1.1);">
-                    
-                    <div class="ai-hotspot forehead">
-                        <span class="hotspot-label">T-Zone: Normal</span>
-                    </div>
-                    <div class="ai-hotspot cheek">
-                        <span class="hotspot-label">Hydration Alert</span>
-                    </div>
-                </div>
-                
-                <div class="vitality-metrics" style="margin-top: 25px;">
-                    <div class="metric-item">
-                        <label>Skin Clarity <span>88%</span></label>
-                        <div class="progress-bar"><div class="fill" style="width: 88%;"></div></div>
-                    </div>
-                    <div class="metric-item" style="margin-top: 15px;">
-                        <label>Hydration Level <span>42%</span></label>
-                        <div class="progress-bar"><div class="fill" style="width: 42%; background: #4db6ac;"></div></div>
-                    </div>
-                </div>
-            </section>
+    <div style="text-align:center; margin-top:30px;">
+        <h1 style="color: var(--accent-pink);">Analysis Complete</h1>
+        <p>Your personalised skincare results</p>
+    </div>
 
-            <section class="card recommendations">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="margin: 0;">Prescribed Routine</h3>
-                    <span class="brand-mark" style="font-size: 0.7rem; padding: 4px 10px;">{{ goal | upper }}</span>
+    <div class="results-grid">
+
+        <!--image and results -->
+        <section class="card">
+            <h3>Scan Result</h3>
+
+            <img src="{{ image_data }}" style="width:100%; border-radius:15px;">
+
+            <div style="margin-top:20px;">
+                <p><strong>Clarity:</strong> {{ clarity }}%</p>
+                <div class="progress-bar">
+                    <div class="fill" style="width: {{ clarity }}%;"></div>
                 </div>
 
-                <div class="routine-step">
-                    <h4>☀️ Morning</h4>
-                    <p>{{ advice.morning }}</p>
-                </div>
-                
-                <div class="routine-step">
-                    <h4>🌙 Evening</h4>
-                    <p>{{ advice.evening }}</p>
+                <p style="margin-top:15px;"><strong>Redness:</strong> {{ redness }}%</p>
+                <div class="progress-bar">
+                    <div class="fill" style="width: {{ redness }}%; background:#e57373;"></div>
                 </div>
 
-                <div class="lifestyle-tips" style="background: var(--soft-cream); padding: 15px; border-radius: 12px; border-left: 4px solid var(--accent-pink);">
-                    <h4>💡 Clinical Note</h4>
-                    <p>{{ advice.tip }}</p>
-                </div>
+                <p style="margin-top:15px;"><strong>Confidence:</strong> {{ confidence }}%</p>
+            </div>
 
-                {% if sun == 'high' %}
-                <div style="margin-top: 15px; padding: 10px; background: #fff5f5; border-radius: 8px; border: 1px solid #feb2b2; color: #c53030; font-size: 0.85rem; display: flex; align-items: center; gap: 10px;">
-                    <span>⚠️</span> <strong>UV Warning:</strong> High exposure detected. SPF 50 is mandatory.
-                </div>
-                {% endif %}
-
-                <div class="actions" style="margin-top:30px;">
-                    <a href="{{ url_for('profile') }}" class="btn btn-primary btn-block" style="text-align: center;">Save to My Dashboard</a>
-                </div>
-            </section>
-
-
-            <section class="card results-actions">
-                <h3>Finalize Analysis</h3>
-                <div class="actions-container" style="display: flex; gap: 15px; margin-top: 15px;">
-                    
-                    <form action="{{ url_for('save_scan') }}" method="POST" style="flex: 1;">
-                        <input type="hidden" name="image_data" value="{{ image_data }}">
-                        <input type="hidden" name="goal" value="{{ goal }}">
-                        <button type="submit" class="btn btn-primary btn-block">
-                            Save to Profile
-                        </button>
-                    </form>
-
-                    <button onclick="window.print()" class="btn btn-ghost" style="flex: 1;">
-                        Download PDF
-                    </button>
-                </div>
-                <p style="font-size: 0.75rem; text-align: center; margin-top: 10px; opacity: 0.6;">
-                    Saving will add this scan to your <strong>Skin Journey</strong> history.
-                </p>
-            </section>
             
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2026 Glowthesis Administrative System</p>
-    </footer>
+            <div style="margin-top:20px; font-size:0.85rem; opacity:0.8;">
+                <p><strong>Clarity:</strong> Measures skin smoothness using texture detection.</p>
+                <p><strong>Redness:</strong> Estimates inflammation using colour analysis.</p>
+                <p><strong>Confidence:</strong> Indicates reliability based on lighting and detection quality.</p>
+                <p style="font-size:0.7rem; opacity:0.6;">
+                    Confidence reflects detection reliability, not medical certainty.
+                </p>
+            </div>
+
+            
+            <div style="margin-top:15px; padding:12px; background:#fafafa; border-radius:8px; font-size:0.75rem; opacity:0.75;">
+
+                <p style="margin-bottom:6px;">
+                    <strong>How this analysis works:</strong> This system uses image-based colour and texture detection to estimate skin clarity and redness levels.
+                </p>
+
+                <p style="margin-bottom:6px;">
+                    Results may vary depending on lighting conditions, camera quality, background, and non-skin features such as hair or accessories.
+                </p>
+
+                <p>
+                    This tool is not intended for medical diagnosis. For clinical concerns, please consult a qualified healthcare professional.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- recommendations -->
+        <section class="card">
+            <h3>Recommended Routine</h3>
+
+            <div class="routine-step">
+                <h4>Morning</h4>
+                <p>{{ advice.morning }}</p>
+
+                <!-- searching product -->
+                <a href="https://www.google.com/search?q={{ advice.morning | replace(' ', '+') }}"
+                    target="_blank"
+                    class="btn btn-ghost"
+                    style="margin-top:10px;">
+                    Find Products
+                </a>
+            </div>
+
+            <div class="routine-step">
+                <h4>Evening</h4>
+                <p>{{ advice.evening }}</p>
+
+                <a href="https://www.google.com/search?q={{ advice.evening | replace(' ', '+') }}"
+                    target="_blank"
+                    class="btn btn-ghost"
+                    style="margin-top:10px;">
+                    Find Products
+                </a>
+            </div>
+
+            <div style="margin-top:20px; padding:15px; background:var(--soft-cream); border-radius:10px;">
+                <h4>Tip</h4>
+                <p>{{ advice.tip }}</p>
+            </div>
+            
+            
+            <div style="margin-top:15px; font-size:0.8rem; opacity:0.85;">
+
+                {% if goal == "redness" %}
+                    <p>
+                        This routine is recommended because your scan detected elevated redness levels 
+                        ({{ redness }}%), which may indicate skin sensitivity or irritation.
+                    </p>
+
+                {% elif goal == "texture" %}
+                    <p>
+                        This routine is recommended because your skin clarity score is relatively low 
+                        ({{ clarity }}%), suggesting uneven texture or roughness.
+                    </p>
+
+                {% elif goal == "acne" %}
+                    <p>
+                        This routine aligns with your selected goal of acne reduction, supported by your skin analysis results.
+                    </p>
+
+                {% elif goal == "pigment" %}
+                    <p>
+                        This routine supports pigmentation control based on your selected skincare goal.
+                    </p>
+
+                {% endif %}
+
+                <p style="font-size:0.75rem; opacity:0.6; margin-top:5px;">
+                    Recommendations are generated using rule-based thresholds applied to your scan results.
+                </p>
+
+            </div>
+
+        </section>
+
+        
+        <section class="card">
+            <h3>Next Steps</h3>
+
+            <form action="{{ url_for('save_scan') }}" method="POST">
+                <input type="hidden" name="image_data" value="{{ image_data }}">
+                <input type="hidden" name="goal" value="{{ goal }}">
+                <button class="btn btn-primary btn-block">Save to Profile</button>
+            </form>
+
+            <button onclick="window.print()" class="btn btn-ghost btn-block" style="margin-top:10px;">
+                Download PDF (Via Print)
+            </button>
+
+            
+            <p style="font-size:0.75rem; margin-top:15px; opacity:0.6;">
+                Progress in your dashboard is calculated based on average skin clarity across your previous scans.
+            </p>
+        </section>
+
+    </div>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 Glowthesis</p>
+</footer>
+
 </body>
+
 </html>

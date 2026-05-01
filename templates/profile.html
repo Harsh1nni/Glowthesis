@@ -6,128 +6,183 @@
     <title>Glowthesis | My Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="gradient-bg"> <header class="site-header">
-        <div class="container header-inner">
-            <a class="brand" href="{{ url_for('home') }}">
-                <span class="brand-mark">G</span>
-                <span class="brand-name">Glowthesis</span>
-            </a>
 
-            <nav>
-                <a href="{{ url_for('home') }}">Home</a>
+<body class="gradient-bg">
 
-                {% if session.get('user_id') == 'ADMIN' %}
-                    <a href="{{ url_for('admin') }}" class="admin-link">Admin Panel</a>
-                {% elif session.get('user_id') %}
-                    <a href="{{ url_for('profile') }}">My Profile</a>
-                {% endif %}
 
-                {% if session.get('user_id') %}
-                    <a href="{{ url_for('logout') }}" style="opacity: 0.6; font-size: 0.8rem; margin-left: 10px;">
-                        Logout ({{ session.get('user_name') }})
-                    </a>
-                {% endif %}
-            </nav>
-        </div>
+<header class="site-header">
+    <div class="container header-inner">
+        <a class="brand" href="{{ url_for('home') }}">
+            <span class="brand-mark">G</span>
+            <span class="brand-name">Glowthesis</span>
+        </a>
+
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+
+            {% if session.get('user_id') == 'ADMIN' %}
+                <a href="{{ url_for('admin') }}" class="admin-link">Admin Panel</a>
+            {% elif session.get('user_id') %}
+                <a href="{{ url_for('profile') }}">My Profile</a>
+            {% endif %}
+
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('logout') }}" style="opacity:0.6; font-size:0.8rem; margin-left:10px;">
+                    Logout ({{ session.get('user_name') }})
+                </a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+
+<main class="container dashboard">
+
+    
+    <header style="text-align:center; padding:40px 0;">
+        <h2 style="font-size:2.5rem; color:var(--text-dark);">
+            Welcome back, <span style="color:var(--accent-pink);">{{ name }}</span>
+        </h2>
+        <p style="opacity:0.7;">Your personal skincare journey progress.</p>
     </header>
 
-    <main class="container dashboard">
-        <header class="dashboard-header" style="text-align: center; padding: 40px 0;">
-            <h2 style="font-size: 2.5rem; color: var(--text-dark); text-shadow: 2px 2px 10px rgba(240, 98, 146, 0.2);">
-                Welcome back, <span style="color: var(--accent-pink);">{{ name }}</span>
-            </h2>
-            <p style="opacity: 0.7;">Your personal skincare journey progress.</p>
-        </header>
+    <div class="dashboard-grid">
 
-        <div class="dashboard-grid">
-            <section class="card">
-                <h3>Skin Journey</h3>
-                <div class="progress-bar-container" style="margin-top: 20px;">
-                    <label style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px;">
-                        Goal Completion <span>75%</span>
-                    </label>
-                    <div class="progress-bar" style="background:#eee; height:10px; border-radius:5px;">
-                        <div class="fill" style="width: 75%; background:var(--accent-pink); height:100%; border-radius:5px; box-shadow: 0 0 10px var(--primary-pink);"></div>
-                    </div>
+        <!-- progress -->
+        <section class="card">
+            <h3>Skin Journey</h3>
+
+            <div style="margin-top:20px;">
+                <label style="display:flex; justify-content:space-between;">
+                    Goal Completion <span>{{ progress }}%</span>
+                </label>
+
+                <div style="background:#eee; height:10px; border-radius:5px;">
+                    <div style="width:{{ progress }}%; background:var(--accent-pink); height:100%; border-radius:5px;"></div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section class="card">
-                <h3>Current Goal</h3>
-                <p style="margin-bottom: 15px;"><strong>Target:</strong> <span style="color: var(--accent-pink);">{{ goal | capitalize }}</span></p>
-                
-                <div id="goal-form" style="display: none; margin-top: 15px; border-top: 1px solid var(--primary-pink); padding-top: 15px;">
-                    <form action="{{ url_for('update_goal') }}" method="POST">
-                        <select name="goal" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--primary-pink); margin-bottom: 10px;">
-                            <option value="acne">Clear Acne</option>
-                            <option value="redness">Reduce Redness</option>
-                            <option value="texture">Smooth Texture</option>
-                            <option value="pigment">Fade Dark Spots</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary btn-block" style="padding: 8px;">Save New Goal</button>
+        <!-- goal -->
+        <section class="card">
+            <h3>Current Goal</h3>
+
+            <p>
+                <strong>Target:</strong>
+                <span style="color:var(--accent-pink);">
+                    {{ goal | capitalize }}
+                </span>
+            </p>
+
+            <div id="goal-form" style="display:none; margin-top:15px;">
+                <form action="{{ url_for('update_goal') }}" method="POST">
+                    <select name="goal" style="width:100%; padding:10px;">
+                        <option value="acne">Clear Acne</option>
+                        <option value="redness">Reduce Redness</option>
+                        <option value="texture">Smooth Texture</option>
+                        <option value="pigment">Fade Dark Spots</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Save
+                    </button>
+                </form>
+            </div>
+
+            <button onclick="toggleGoalForm()" class="btn btn-ghost">
+                Update Goals
+            </button>
+        </section>
+
+        <!-- history -->
+        <section class="card full-width">
+
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                <h3>Scan History</h3>
+                <a href="{{ url_for('analyse') }}" class="btn btn-primary">+ New Scan</a>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:20px;">
+
+                {% for scan in scans %}
+                <div style="position:relative; background:white; padding:12px; border-radius:15px; border:1px solid var(--primary-pink);">
+
+                    <!-- delete -->
+                    <form action="{{ url_for('delete_scan', scan_id=scan.id) }}"
+                        method="POST"
+                        onsubmit="return confirm('Delete this scan?')"
+                        style="position:absolute; top:8px; right:8px; z-index:5;">
+
+                        <button type="submit"
+                                style="color:red; border:none; background:none; font-size:1rem;">
+                            &times;
+                        </button>
                     </form>
-                </div>
 
-                <button id="toggle-goal-btn" class="btn btn-ghost" onclick="toggleGoalForm()">Update Goals</button>
-            </section>
+                    <!-- image -->
+                    <a href="{{ url_for('view_scan', scan_id=scan.id) }}">
+                        <img src="{{ scan.image_data }}"
+                            style="width:100%; border-radius:10px; cursor:pointer;">
+                    </a>
 
-            <section class="card full-width">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 style="margin: 0;">Scan History</h3>
-                    <a href="{{ url_for('analyse') }}" class="btn btn-primary" style="text-decoration: none; font-size: 0.8rem; padding: 8px 15px;">+ New Scan</a>
-                </div>
+                    <!-- info -->
+                    <div style="text-align:center; margin-top:10px;">
 
-                <div class="history-gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px;">
-                    
-                    {% for scan in scans %}
-                    <div class="history-card-item" style="position: relative; background: white; padding: 12px; border-radius: 15px; border: 1px solid var(--primary-pink); display: flex; flex-direction: column; height: 100%;">
-                        
-                        <a href="{{ url_for('delete_scan', scan_id=scan.id) }}" 
-                        onclick="return confirm('Delete this scan? This cannot be undone.')"
-                        style="position: absolute; top: 8px; right: 8px; background: white; color: red; text-decoration: none; padding: 0px 6px; border-radius: 50%; font-size: 1rem; border: 1px solid #ff000033; z-index: 5; line-height: 1;">
-                        &times;
-                        </a>
+                        <p style="font-size:0.85rem; font-weight:bold;">
+                            {{ scan.timestamp.strftime('%b %d, %Y') if scan.timestamp else 'Unknown date' }}
+                        </p>
 
-                        <div style="width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 10px; background: #fafafa;">
-                            <img src="{{ scan.image_data }}" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
+                        <p style="font-size:0.7rem; color:var(--accent-pink);">
+                            {{ scan.goal | capitalize }}
+                        </p>
 
-                        <div style="text-align: center; margin-top: 12px; flex-grow: 1;">
-                            <p style="font-size: 0.85rem; font-weight: bold; margin: 0; color: var(--text-dark);">
-                                {{ scan.timestamp.strftime('%b %d, %Y') }}
-                            </p>
-                            <p style="font-size: 0.7rem; color: var(--accent-pink); margin: 4px 0 0 0; text-transform: uppercase; letter-spacing: 0.5px;">
-                                {{ scan.goal | capitalize }}
-                            </p>
-                        </div>
+                        <!-- reeults -->
+                        <p style="font-size:0.7rem; opacity:0.7;">
+                            Clarity: {{ scan.clarity }}%
+                        </p>
+
+                        <p style="font-size:0.7rem; opacity:0.7;">
+                            Redness: {{ scan.redness }}%
+                        </p>
+
+                        <p style="font-size:0.7rem; opacity:0.7;">
+                            Confidence: {{ scan.confidence }}%
+                        </p>
+
                     </div>
-                    {% endfor %}
-
-                </div> {% if not scans %}
-                <div style="text-align: center; padding: 40px; opacity: 0.5;">
-                    <p>Your journey starts here. Take your first scan!</p>
                 </div>
-                {% endif %}
-            </section>
-        </div>
-    </main>
+                {% endfor %}
 
-    <footer style="margin-top: 50px; padding: 20px; text-align: center; opacity: 0.6; font-size: 0.8rem;">
-        <p>&copy; 2026 Glowthesis AI Skincare. Your data is encrypted and secure.</p>
-    </footer>
+            </div>
 
-    <script>
-    function toggleGoalForm() {
-        var x = document.getElementById("goal-form");
-        var btn = document.getElementById("toggle-goal-btn");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-            btn.innerText = "Cancel";
-        } else {
-            x.style.display = "none";
-            btn.innerText = "Update Goals";
-        }
+            <!-- if empty -->
+            {% if not scans %}
+            <div style="text-align:center; padding:40px; opacity:0.5;">
+                <p>Your journey starts here. Take your first scan!</p>
+            </div>
+            {% endif %}
+
+        </section>
+
+    </div>
+</main>
+
+
+<script>
+function toggleGoalForm(){
+    let f = document.getElementById("goal-form");
+
+    if (f.style.display === "block") {
+        f.style.display = "none";
+    } else {
+        f.style.display = "block";
     }
-    </script>
+}
+</script>
+<footer>
+    <p>&copy; 2026 Glowthesis</p>
+</footer>
+
 </body>
+
 </html>

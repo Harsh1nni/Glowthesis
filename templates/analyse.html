@@ -40,7 +40,18 @@
             <div class="section-title">
                 <h1>Skin Assessment</h1>
                 <p>Scan your face or upload a photo to begin.</p>
+                <p style="font-size:0.7rem; opacity:0.6;">
+                    For best results, ensure your face is clearly visible with good lighting.
+                </p>
             </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div style="color:red; text-align:center;">
+                    {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
 
             <div class="analysis-grid">
                 <div class="card camera-card">
@@ -62,7 +73,7 @@
                         </label>
                         <input type="file" id="file-upload" accept="image/*" style="display: none;">
                         
-                        <p id="capture-status" style="display:none; color: #28a745; margin-top: 5px; font-weight: bold; text-align: center;">✅ Image Ready!</p>
+                        <p id="capture-status" style="display:none; color: #28a745; margin-top: 5px; font-weight: bold; text-align: center;">Image Ready!</p>
                     </div>
                 </div>
 
@@ -111,7 +122,7 @@
         
         // tryna make it smaller
         
-        canvas.width = 640; 
+        canvas.width = 640;
         canvas.height = 480;
         
         context.drawImage(sourceElement, 0, 0, canvas.width, canvas.height);
@@ -125,7 +136,7 @@
         video.style.display = 'none';
         
         status.style.display = 'block';
-        status.innerText = "✅ Image Optimized & Ready!";
+        status.innerText = "Image captured. Click 'Generate Results' to analyse.";
     }
 
     captureBtn.addEventListener('click', (e) => {
@@ -150,7 +161,7 @@
 </script>
 
     <footer>
-        <p>&copy; 2026 Glowthesis Administrative System</p>
+        <p>&copy; 2026 Glowthesis</p>
     </footer>
 </body>
 </html>

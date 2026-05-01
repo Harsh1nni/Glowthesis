@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan Detail</title>
+</head>
+<body style="text-align:center; font-family:sans-serif;">
+
+    <h2>Scan Detail</h2>
+
+    <img src="{{ scan.image_data }}" style="width:300px; border-radius:10px;">
+
+    <p><strong>Goal:</strong> {{ scan.goal }}</p>
+    <p><strong>Clarity:</strong> {{ scan.clarity }}%</p>
+    <p><strong>Redness:</strong> {{ scan.redness }}%</p>
+    <p><strong>Confidence:</strong> {{ scan.confidence }}%</p>
+
+    <br>
+    <a href="{{ url_for('profile') }}">← Back to Dashboard</a>
+
+    <footer>
+        <p>&copy; 2026 Glowthesis</p>
+    </footer>
+
+</body>
+
+</html>

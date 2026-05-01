@@ -390,3 +390,13 @@ footer {
     width: fit-content;
     margin: 0 auto;
 }
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
