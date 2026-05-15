@@ -18,7 +18,8 @@ app.secret_key = 'glow_secret_key_2026'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # Firebase
-firebase_key = json.loads(os.environ.get("FIREBASE_KEY"))
+with open("serviceAccountKey.json") as f:
+    firebase_key = json.load(f)
 
 cred = credentials.Certificate(firebase_key)
 if not firebase_admin._apps:
