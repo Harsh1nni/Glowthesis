@@ -24,6 +24,7 @@ with open("serviceAccountKey.json") as f:
 cred = credentials.Certificate(firebase_key)
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
+    print("Project:", firebase_admin.get_app().project_id)
 db = firestore.client()
 
 
@@ -41,14 +42,19 @@ def signup():
 
         try:
             hashed_pw = generate_password_hash(pw)
+            print("Creating Firebase Auth user...")
 
             user = auth.create_user(email=email, password=pw)
+            print('user created')
+
+            print("Saving to Firestore...")
 
             db.collection('users').document(user.uid).set({
                 'name': name,
                 'email': email,
                 'password': hashed_pw
             })
+            print("Saved!")
 
             session['user_id'] = user.uid
             session['user_name'] = name

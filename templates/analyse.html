@@ -97,7 +97,27 @@
                             </div>
                         </div>
                         <input type="hidden" name="image_data" id="image_data">
-                        <button type="submit" class="btn btn-primary btn-block">Generate Results</button>
+
+                        <div style="margin:15px 0; padding:12px; background:#fff8f8; border:1px solid #f3d6dc; border-radius:8px; font-size:0.85rem; line-height:1.5; color:#555;">
+                            <input type="hidden" name="image_data" id="image_data">
+
+                            <div style="margin:15px 0; padding:12px; background:#fff8f8; border:1px solid #f3d6dc; border-radius:8px; font-size:0.85rem; line-height:1.5; color:#555;">
+
+                                <label style="display:flex; align-items:flex-start; gap:10px;">
+                                    <input type="checkbox" id="privacyCheck" required style="margin-top:4px;">
+
+                                    <span>
+                                        I understand that Glowthesis analyses my facial image to provide personalised skincare recommendations.
+                                        If I am logged in, my scan image and analysis results will be securely stored in Firebase Firestore to allow progress tracking.
+                                        I understand that I can permanently delete saved scans from my profile at any time.
+                                    </span>
+                                </label>
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Generate Results
+                            </button>
                     </form>
                 </div>
             </div>
